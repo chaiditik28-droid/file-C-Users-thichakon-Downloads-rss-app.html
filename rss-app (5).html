@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RSS : Risk Safety Suggestion</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Sarabun',sans-serif;background:#f8fafc;color:#1e293b;min-height:100vh}
+  button{font-family:'Sarabun',sans-serif;cursor:pointer}
+  input,textarea{font-family:'Sarabun',sans-serif}
+  .navbar{background:#fff;border-bottom:1px solid #e2e8f0;padding:0 24px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 4px rgba(0,0,0,0.06);position:sticky;top:0;z-index:40}
+  .navbar-left{display:flex;align-items:center;gap:12px;padding:12px 0}
+  .logo{background:#1d4ed8;border-radius:9px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:17px;flex-shrink:0}
+  .nav-title{font-weight:700;font-size:16px;color:#1e293b}
+  .nav-sub{font-size:11px;color:#94a3b8}
+  .navbar-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .btn-nav{padding:7px 16px;border-radius:8px;border:none;font-size:13px;font-weight:600;color:#64748b;background:#f1f5f9}
+  .btn-nav.active{background:#1d4ed8;color:#fff}
+  .container{max-width:900px;margin:0 auto;padding:28px 20px}
+  .home{text-align:center;padding-top:16px}
+  .home-icon{font-size:56px;margin-bottom:10px}
+  .home h1{font-size:28px;font-weight:700;margin-bottom:8px}
+  .home p{color:#64748b;font-size:15px;max-width:460px;margin:0 auto 28px;line-height:1.6}
+  .home-btns{display:flex;gap:12px;justify-content:center;margin-bottom:36px;flex-wrap:wrap}
+  .btn-primary{padding:14px 32px;border-radius:10px;border:none;background:#1d4ed8;color:#fff;font-size:15px;font-weight:700;box-shadow:0 4px 14px rgba(29,78,216,0.3)}
+  .btn-secondary{padding:14px 32px;border-radius:10px;border:2px solid #e2e8f0;background:#fff;color:#1e293b;font-size:15px;font-weight:700}
+  .sev-cards{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+  .sev-card{text-align:center;padding:14px 18px;border-radius:10px;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,0.05)}
+  .sev-dot{width:12px;height:12px;border-radius:50%;margin:0 auto 8px}
+  .sev-label{font-weight:700;font-size:13px}
+  .sev-desc{font-size:11px;color:#94a3b8;max-width:130px;margin-top:3px;line-height:1.4}
+  .card{background:#fff;border-radius:12px;padding:22px 24px;margin-bottom:14px;border:1px solid #e2e8f0;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+  .card-title{font-weight:700;font-size:15px;color:#1d4ed8;margin-bottom:16px;border-bottom:1px solid #f1f5f9;padding-bottom:10px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .form-group{margin-bottom:12px}
+  label.lbl{display:block;font-size:13px;color:#475569;margin-bottom:5px;font-weight:600}
+  .inp{width:100%;padding:9px 13px;border-radius:8px;border:1px solid #e2e8f0;background:#f8fafc;color:#1e293b;font-size:14px;outline:none}
+  .inp:focus{border-color:#3b82f6;background:#fff}
+  textarea.inp{resize:vertical}
+  .hazard-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .hazard-item{display:flex;align-items:center;gap:9px;padding:9px 13px;border-radius:8px;background:#f8fafc;border:1px solid #e2e8f0;cursor:pointer;font-size:13px;transition:all .2s}
+  .hazard-item.checked{background:#eff6ff;border-color:#3b82f6;color:#1d4ed8}
+  .hazard-item input{accent-color:#3b82f6;flex-shrink:0}
+  .sev-radio{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:9px;background:#f8fafc;border:1px solid #e2e8f0;cursor:pointer;margin-bottom:7px;transition:all .2s}
+  .img-upload-wrap{border-radius:10px;border:2px dashed #e2e8f0;min-height:140px;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer;background:#eff6ff;transition:border-color .2s;position:relative}
+  .img-upload-wrap.after{background:#f0fdf4}
+  .img-upload-wrap:hover{border-color:#3b82f6}
+  .img-preview{width:100%;height:140px;object-fit:cover;display:block}
+  .img-placeholder{text-align:center;color:#94a3b8;pointer-events:none}
+  .img-placeholder .icon{font-size:28px;margin-bottom:5px}
+  .btn-submit{width:100%;padding:14px;border-radius:10px;border:none;background:#1d4ed8;color:#fff;font-size:16px;font-weight:700;box-shadow:0 4px 14px rgba(29,78,216,0.25)}
+  .btn-submit:disabled{background:#94a3b8;cursor:not-allowed}
+  .alert-success{background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:14px 20px;margin-bottom:18px;text-align:center;color:#15803d;font-weight:700;font-size:15px;display:none}
+  .list-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+  .list-header h2{font-weight:700;font-size:19px;color:#1e293b}
+  .badge-count{background:#eff6ff;color:#1d4ed8;padding:4px 14px;border-radius:20px;font-weight:600;font-size:13px}
+  .list-item{background:#fff;border-radius:11px;padding:14px 18px;border:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(0,0,0,0.04);margin-bottom:9px;flex-wrap:wrap;gap:10px}
+  .list-left{display:flex;align-items:center;gap:12px}
+  .sev-badge{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;flex-shrink:0}
+  .list-name{font-weight:700;color:#1e293b;font-size:14px}
+  .list-sub{color:#94a3b8;font-size:12px}
+  .list-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .list-date{font-size:11px;color:#94a3b8}
+  .btn-pdf{padding:6px 13px;border-radius:7px;border:1px solid #fecaca;background:#fff5f5;color:#dc2626;font-size:12px;font-weight:700}
+  .btn-detail{padding:6px 13px;border-radius:7px;border:none;background:#1d4ed8;color:#fff;font-size:12px;font-weight:700}
+  .empty-state{text-align:center;padding:70px 20px;background:#fff;border-radius:12px;border:1px solid #e2e8f0}
+  .action-row{display:flex;gap:9px;margin-bottom:18px}
+  .btn-back{padding:7px 16px;border-radius:8px;border:1px solid #e2e8f0;background:#fff;color:#64748b;font-size:13px}
+  .btn-export{padding:7px 18px;border-radius:8px;border:none;background:#dc2626;color:#fff;font-size:13px;font-weight:700}
+  .detail-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;border-bottom:1px solid #f1f5f9;padding-bottom:14px}
+  .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px}
+  .detail-box{background:#f8fafc;border-radius:8px;padding:9px 13px;border:1px solid #f1f5f9}
+  .detail-lbl{font-size:11px;color:#94a3b8;margin-bottom:2px}
+  .detail-val{color:#1e293b;font-weight:600;font-size:14px}
+  .sig-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:20px;padding-top:14px;border-top:1px solid #f1f5f9}
+  .sig-box{border:1px solid #e2e8f0;border-radius:8px;height:64px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px}
+  .sig-box span{font-size:11px;color:#94a3b8}
+  .code-block pre{color:#7dd3fc;font-size:11.5px;line-height:1.75;margin:0;white-space:pre-wrap;font-family:'Courier New',monospace}
+
+  /* DASHBOARD */
+  .db-container{max-width:960px;margin:0 auto}
+  .db-kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+  .db-kpi{background:#fff;border-radius:12px;padding:18px 20px;border:1px solid #e2e8f0;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+  .db-kpi-icon{font-size:24px;margin-bottom:6px}
+  .db-kpi-num{font-size:28px;font-weight:700;color:#1e293b;line-height:1}
+  .db-kpi-label{font-size:12px;color:#94a3b8;margin-top:4px}
+  .db-section{background:#fff;border-radius:12px;border:1px solid #e2e8f0;box-shadow:0 1px 3px rgba(0,0,0,0.04);margin-bottom:14px;overflow:hidden}
+  .db-section-head{padding:14px 20px;border-bottom:1px solid #f1f5f9;display:flex;justify-content:space-between;align-items:center}
+  .db-section-title{font-weight:700;font-size:15px;color:#1e293b}
+  .db-section-body{padding:16px 20px}
+  .db-table{width:100%;border-collapse:collapse;font-size:13px}
+  .db-table th{background:#f8fafc;padding:9px 12px;text-align:left;font-weight:600;color:#475569;border-bottom:1px solid #e2e8f0;font-size:12px}
+  .db-table td{padding:10px 12px;border-bottom:1px solid #f8fafc;color:#1e293b;vertical-align:middle}
+  .db-table tr:last-child td{border-bottom:none}
+  .db-table tr:hover td{background:#f8fafc}
+  .status-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
+  .status-pending{background:#fef9c3;color:#854d0e;border:1px solid #fde047}
+  .status-inprogress{background:#dbeafe;color:#1d4ed8;border:1px solid #93c5fd}
+  .status-done{background:#dcfce7;color:#15803d;border:1px solid #86efac}
+  .inp-num{width:70px;padding:5px 8px;border-radius:6px;border:1px solid #e2e8f0;background:#f8fafc;font-size:13px;text-align:center;font-family:'Sarabun',sans-serif}
+  .inp-num:focus{border-color:#3b82f6;outline:none;background:#fff}
+  .btn-sm{padding:5px 12px;border-radius:6px;border:none;font-size:12px;font-weight:600;font-family:'Sarabun',sans-serif;cursor:pointer}
+  .btn-green{background:#dcfce7;color:#15803d;border:1px solid #86efac}
+  .btn-red{background:#fee2e2;color:#dc2626;border:1px solid #fca5a5}
+  .btn-blue{background:#dbeafe;color:#1d4ed8;border:1px solid #93c5fd}
+  .btn-add-dept{padding:8px 16px;border-radius:8px;border:1px solid #93c5fd;background:#eff6ff;color:#1d4ed8;font-size:13px;font-weight:700;font-family:'Sarabun',sans-serif;cursor:pointer}
+  .db-grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+  .bar-wrap{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .bar-label{font-size:12px;color:#475569;width:120px;flex-shrink:0}
+  .bar-track{flex:1;background:#f1f5f9;border-radius:20px;height:10px;overflow:hidden}
+  .bar-fill{height:100%;border-radius:20px;transition:width .4s}
+  .bar-val{font-size:12px;font-weight:700;color:#1e293b;width:24px;text-align:right;flex-shrink:0}
+  .sev-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
+  .dept-add-row{display:flex;gap:8px;margin-bottom:12px}
+  .dept-add-row input{flex:1;padding:8px 12px;border-radius:8px;border:1px solid #e2e8f0;background:#f8fafc;font-size:13px;font-family:'Sarabun',sans-serif;outline:none}
+  select.inp-status{padding:4px 8px;border-radius:6px;border:1px solid #e2e8f0;background:#f8fafc;font-size:12px;font-family:'Sarabun',sans-serif;outline:none;cursor:pointer}
+  .page{display:none}
+  .page.active{display:block}
+  @media(max-width:600px){
+    .grid2,.hazard-grid,.detail-grid,.sig-row{grid-template-columns:1fr}
+    .navbar-right{gap:4px}
+    .btn-nav{padding:6px 10px;font-size:11px}
+    .home-btns{flex-direction:column;align-items:center}
+    .list-item{flex-direction:column;align-items:flex-start}
+  }
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="navbar-left">
+    <div class="logo">A</div>
+    <div>
+      <div class="nav-title">RSS : Risk Safety Suggestion</div>
+      <div class="nav-sub">ระบบแจ้งข้อเสนอแนะด้านความปลอดภัย</div>
+    </div>
+  </div>
+  <div class="navbar-right">
+    <button class="btn-nav active" id="nav-home" onclick="showPage('home')">🏠 หน้าหลัก</button>
+    <button class="btn-nav" id="nav-form" onclick="showPage('form')">✍️ แจ้งข้อเสนอ</button>
+    <button class="btn-nav" id="nav-list" onclick="showPage('list')">📋 รายการ (<span id="count">0</span>)</button>
+    <button class="btn-nav" id="nav-dash" onclick="showPage('dash')">📊 Dashboard</button>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- HOME -->
+  <div class="page active" id="page-home">
+    <div class="home">
+      <div class="home-icon">🦺</div>
+      <h1>Risk Safety Suggestion</h1>
+      <p>ระบบรายงานและเสนอแนะด้านความปลอดภัยในการทำงาน เพื่อสร้างสภาพแวดล้อมที่ปลอดภัย</p>
+      <div class="home-btns">
+        <button class="btn-primary" onclick="showPage('form')">✍️ แจ้งข้อเสนอแนะใหม่</button>
+        <button class="btn-secondary" onclick="showPage('list')">📋 ดูรายการทั้งหมด (<span id="count2">0</span>)</button>
+      </div>
+      <div class="sev-cards">
+        <div class="sev-card" style="border:1px solid #dc262630">
+          <div class="sev-dot" style="background:#dc2626"></div>
+          <div class="sev-label" style="color:#dc2626">ระดับ A</div>
+          <div class="sev-desc">ตาย พิการ หรือสูญเสียอวัยวะ</div>
+        </div>
+        <div class="sev-card" style="border:1px solid #ea580c30">
+          <div class="sev-dot" style="background:#ea580c"></div>
+          <div class="sev-label" style="color:#ea580c">ระดับ B</div>
+          <div class="sev-desc">บาดเจ็บ หรือหยุดการผลิต</div>
+        </div>
+        <div class="sev-card" style="border:1px solid #ca8a0430">
+          <div class="sev-dot" style="background:#ca8a04"></div>
+          <div class="sev-label" style="color:#ca8a04">ระดับ C</div>
+          <div class="sev-desc">บาดเจ็บเล็กน้อย หรือไม่หยุดการผลิต</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="page" id="page-form">
+    <div class="alert-success" id="alert-success">✅ บันทึกข้อมูลเรียบร้อยแล้ว!</div>
+    <div class="card">
+      <div class="card-title">📝 ข้อมูลผู้แจ้ง</div>
+      <div class="grid2">
+        <div class="form-group">
+          <label class="lbl">ชื่อ - นามสกุล *</label>
+          <input class="inp" id="f-name" type="text" placeholder="กรอกชื่อ-นามสกุล">
+        </div>
+        <div class="form-group">
+          <label class="lbl">รหัสพนักงาน *</label>
+          <input class="inp" id="f-emp" type="text" placeholder="รหัสพนักงาน">
+        </div>
+        <div class="form-group">
+          <label class="lbl">แผนก *</label>
+          <input class="inp" id="f-dept" type="text" placeholder="ชื่อแผนก">
+        </div>
+        <div class="form-group">
+          <label class="lbl">วันที่</label>
+          <input class="inp" id="f-date" type="date">
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⚠️ รายละเอียดอันตราย</div>
+      <div class="form-group">
+        <label class="lbl">1. ระบุงานที่ทำ และพื้นที่ปฏิบัติงาน *</label>
+        <input class="inp" id="f-area" type="text" placeholder="เช่น งานเชื่อม แผนกผลิต อาคาร A">
+      </div>
+      <div class="form-group">
+        <label class="lbl">2. ระบุเครื่องจักร / อุปกรณ์ ที่ทำให้เกิดอันตราย</label>
+        <input class="inp" id="f-equip" type="text" placeholder="เช่น เครื่องกลึง, สายไฟ">
+      </div>
+      <div class="form-group">
+        <label class="lbl">3. ระบุอันตรายที่เกิด (stop 6 type)</label>
+        <div class="hazard-grid">
+          <label class="hazard-item"><input type="checkbox" value="1. อันตรายจากเครื่องจักร"><span>1. อันตรายจากเครื่องจักร</span></label>
+          <label class="hazard-item"><input type="checkbox" value="2. อันตรายจากวัตถุหนักตกใส่"><span>2. อันตรายจากวัตถุหนักตกใส่</span></label>
+          <label class="hazard-item"><input type="checkbox" value="3. อันตรายจากยานพาหนะ"><span>3. อันตรายจากยานพาหนะ</span></label>
+          <label class="hazard-item"><input type="checkbox" value="4. อันตรายจากการตกจากที่สูง"><span>4. อันตรายจากการตกจากที่สูง</span></label>
+          <label class="hazard-item"><input type="checkbox" value="5. อันตรายจากกระแสไฟฟ้า"><span>5. อันตรายจากกระแสไฟฟ้า</span></label>
+          <label class="hazard-item"><input type="checkbox" value="6. อื่นๆ (ไฟไหม้, ของมีคม, วัตถุร้อน)"><span>6. อื่นๆ (ไฟไหม้, ของมีคม, วัตถุร้อน)</span></label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="lbl">การประเมินความรุนแรง</label>
+        <label class="sev-radio" id="sev-A"><input type="radio" name="sev" value="A" style="accent-color:#dc2626"><span style="font-weight:700;color:#dc2626">ระดับ A</span><span style="color:#64748b;font-size:13px">: ตาย พิการ หรือสูญเสียอวัยวะ</span></label>
+        <label class="sev-radio" id="sev-B"><input type="radio" name="sev" value="B" style="accent-color:#ea580c"><span style="font-weight:700;color:#ea580c">ระดับ B</span><span style="color:#64748b;font-size:13px">: บาดเจ็บ หรือหยุดการผลิต</span></label>
+        <label class="sev-radio" id="sev-C"><input type="radio" name="sev" value="C" style="accent-color:#ca8a04"><span style="font-weight:700;color:#ca8a04">ระดับ C</span><span style="color:#64748b;font-size:13px">: บาดเจ็บเล็กน้อย หรือไม่หยุดการผลิต</span></label>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">💡 ข้อเสนอแนะและรูปภาพ</div>
+      <div class="form-group">
+        <label class="lbl">4. ผู้ปฏิบัติงานทำการเสนอแนะ เพื่อปรับปรุง</label>
+        <textarea class="inp" id="f-suggest" rows="3" placeholder="กรอกข้อเสนอแนะ"></textarea>
+      </div>
+      <div class="grid2">
+        <div>
+          <div style="font-size:13px;color:#475569;margin-bottom:6px;font-weight:600">📷 รูปภาพ ก่อน</div>
+          <div class="img-upload-wrap" id="wrap-before" onclick="document.getElementById('file-before').click()">
+            <div class="img-placeholder"><div class="icon">📁</div><div style="font-size:13px">คลิกเพื่อแนบรูปภาพ</div></div>
+          </div>
+          <input type="file" id="file-before" accept="image/*" style="display:none" onchange="previewImg('file-before','wrap-before','before')">
+        </div>
+        <div>
+          <div style="font-size:13px;color:#475569;margin-bottom:6px;font-weight:600">📷 รูปภาพ หลัง</div>
+          <div class="img-upload-wrap after" id="wrap-after" onclick="document.getElementById('file-after').click()">
+            <div class="img-placeholder"><div class="icon">📁</div><div style="font-size:13px">คลิกเพื่อแนบรูปภาพ</div></div>
+          </div>
+          <input type="file" id="file-after" accept="image/*" style="display:none" onchange="previewImg('file-after','wrap-after','after')">
+        </div>
+      </div>
+    </div>
+    <button class="btn-submit" id="btn-submit" onclick="submitForm()">✅ ส่งข้อเสนอแนะ</button>
+  </div>
+
+  <!-- LIST -->
+  <div class="page" id="page-list">
+    <div class="list-header">
+      <h2>📋 รายการข้อเสนอแนะทั้งหมด</h2>
+      <span class="badge-count"><span id="count3">0</span> รายการ</span>
+    </div>
+    <div id="list-container"></div>
+  </div>
+
+  <!-- DETAIL -->
+  <div class="page" id="page-detail">
+    <div class="action-row">
+      <button class="btn-back" onclick="showPage('list')">← กลับ</button>
+      <button class="btn-export" onclick="exportCurrentPDF()">📄 Export PDF</button>
+    </div>
+    <!-- ข้อมูลผู้แจ้ง -->
+    <div class="card">
+      <div class="detail-header">
+        <h2 style="font-weight:700;font-size:17px;color:#1e293b;margin:0">📄 รายละเอียด RSS</h2>
+        <span id="detail-sev-badge"></span>
+      </div>
+      <div class="detail-grid" id="detail-grid"></div>
+      <div id="detail-hazards"></div>
+      <div id="detail-suggestion"></div>
+      <div id="detail-images" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px"></div>
+      <div class="sig-row">
+        <div class="sig-box"><span>จป.วิชาชีพ</span></div>
+        <div class="sig-box"><span>ประธาน คปอ.</span></div>
+        <div class="sig-box"><span>ประธานกิจกรรม RSS</span></div>
+      </div>
+    </div>
+    <!-- ส่วนหัวหน้างานอัปเดต -->
+    <div class="card" style="border:2px solid #3b82f620;background:#f0f9ff">
+      <div class="card-title" style="color:#0369a1">👷 หัวหน้างาน — อัปเดตการแก้ไข</div>
+      <div class="grid2" style="margin-bottom:12px">
+        <div>
+          <label class="lbl">สถานะการแก้ไข</label>
+          <select class="inp" id="mgr-status">
+            <option value="pending">⏳ รอดำเนินการ</option>
+            <option value="inprogress">🔄 กำลังดำเนินการ</option>
+            <option value="done">✅ แก้ไขเสร็จสิ้น</option>
+          </select>
+        </div>
+        <div>
+          <label class="lbl">วันที่แก้ไข</label>
+          <input class="inp" id="mgr-date" type="date">
+        </div>
+      </div>
+      <div style="margin-bottom:12px">
+        <label class="lbl">หมายเหตุ / วิธีการแก้ไข</label>
+        <textarea class="inp" id="mgr-note" rows="2" placeholder="อธิบายวิธีการแก้ไขที่ดำเนินการ"></textarea>
+      </div>
+      <div style="margin-bottom:14px">
+        <label class="lbl">ชื่อหัวหน้างาน</label>
+        <input class="inp" id="mgr-name" type="text" placeholder="ชื่อ-นามสกุลหัวหน้างาน">
+      </div>
+      <div style="margin-bottom:14px">
+        <div style="font-size:13px;color:#475569;margin-bottom:6px;font-weight:600">📷 รูปภาพหลังการแก้ไข</div>
+        <div class="img-upload-wrap" id="wrap-mgr-img" style="background:#e0f2fe;min-height:130px" onclick="document.getElementById('file-mgr-img').click()">
+          <div class="img-placeholder"><div class="icon">📁</div><div style="font-size:13px">คลิกเพื่อแนบรูปภาพหลังแก้ไข</div></div>
+        </div>
+        <input type="file" id="file-mgr-img" accept="image/*" style="display:none" onchange="previewMgrImg(this)">
+      </div>
+      <button onclick="saveMgrUpdate()" style="width:100%;padding:12px;border-radius:10px;border:none;background:#0369a1;color:#fff;font-size:15px;font-weight:700;font-family:'Sarabun',sans-serif;cursor:pointer;box-shadow:0 4px 14px rgba(3,105,161,0.25)">
+        💾 บันทึกการอัปเดต
+      </button>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="page" id="page-dash">
+    <div class="db-container">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+        <div>
+          <h2 style="font-weight:700;font-size:20px;color:#1e293b">📊 Dashboard ภาพรวม RSS</h2>
+          <div style="font-size:13px;color:#94a3b8;margin-top:2px">ติดตามและอัปเดตสถานะการแก้ไข</div>
+        </div>
+        <button onclick="renderDash()" style="padding:8px 16px;border-radius:8px;border:1px solid #e2e8f0;background:#fff;color:#475569;font-size:13px;font-family:'Sarabun',sans-serif;cursor:pointer">🔄 รีเฟรช</button>
+      </div>
+
+      <!-- KPI -->
+      <div class="db-kpi-row" id="db-kpi"></div>
+
+      <!-- แผนภูมิ -->
+      <div class="db-grid2">
+        <div class="db-section">
+          <div class="db-section-head"><span class="db-section-title">📈 ระดับความรุนแรง</span></div>
+          <div class="db-section-body" id="db-sev-chart"></div>
+        </div>
+        <div class="db-section">
+          <div class="db-section-head"><span class="db-section-title">🏭 RSS แยกตามแผนก (Top 5)</span></div>
+          <div class="db-section-body" id="db-dept-chart"></div>
+        </div>
+      </div>
+
+      <!-- ตารางติดตามแผนก -->
+      <div class="db-section" style="margin-bottom:14px">
+        <div class="db-section-head">
+          <span class="db-section-title">🏭 ตารางติดตามการแก้ไขตามแผนก</span>
+          <button class="btn-add-dept" onclick="showAddDept()">+ เพิ่มแผนก</button>
+        </div>
+        <div class="db-section-body">
+          <div class="dept-add-row" id="dept-add-row" style="display:none">
+            <input id="new-dept-name" placeholder="ชื่อแผนกใหม่" onkeydown="if(event.key==='Enter')confirmAddDept()">
+            <button class="btn-sm btn-blue" onclick="confirmAddDept()">✓ เพิ่ม</button>
+            <button class="btn-sm" style="background:#f1f5f9;color:#64748b" onclick="cancelAddDept()">ยกเลิก</button>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="db-table" id="dept-table">
+              <thead>
+                <tr>
+                  <th>แผนก</th>
+                  <th style="text-align:center">RSS ทั้งหมด</th>
+                  <th style="text-align:center">เป้าหมาย</th>
+                  <th style="text-align:center">แก้ไขแล้ว</th>
+                  <th style="text-align:center">คงเหลือ</th>
+                  <th style="text-align:center">สถานะ</th>
+                  <th style="text-align:center">จัดการ</th>
+                </tr>
+              </thead>
+              <tbody id="dept-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- รายการล่าสุด -->
+      <div class="db-section">
+        <div class="db-section-head"><span class="db-section-title">🕐 รายการล่าสุด 5 รายการ</span></div>
+        <div style="overflow-x:auto">
+          <table class="db-table" id="db-recent"></table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ===================== CONFIG =====================
+const STORAGE_KEY = "rss_v3";
+const SEV_COLORS = {A:"#dc2626",B:"#ea580c",C:"#ca8a04"};
+const SEV_LABELS = {A:"ระดับ A — ตาย พิการ หรือสูญเสียอวัยวะ",B:"ระดับ B — บาดเจ็บ หรือหยุดการผลิต",C:"ระดับ C — บาดเจ็บเล็กน้อย หรือไม่หยุดการผลิต"};
+
+// ===================== STATE =====================
+let submissions = [];
+let currentDetail = null;
+let imgBefore = null, imgAfter = null;
+
+// ===================== STORAGE =====================
+async function saveData(items) {
+  try { await window.storage.set(STORAGE_KEY, JSON.stringify(items), true); } catch(e) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); } catch(e2) {}
+  }
+}
+async function loadData() {
+  try {
+    const r = await window.storage.get(STORAGE_KEY, true);
+    if(r && r.value) return JSON.parse(r.value);
+  } catch(e) {}
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]"); } catch(e) { return []; }
+}
+
+// ===================== INIT =====================
+document.addEventListener('DOMContentLoaded', async () => {
+  document.getElementById('f-date').value = new Date().toISOString().slice(0,10);
+  submissions = await loadData();
+  updateCounts();
+  renderList();
+  // checkbox listeners
+  document.querySelectorAll('.hazard-item').forEach(el => {
+    el.querySelector('input').addEventListener('change', () => {
+      el.classList.toggle('checked', el.querySelector('input').checked);
+    });
+  });
+  // radio listeners
+  document.querySelectorAll('input[name="sev"]').forEach(r => {
+    r.addEventListener('change', () => {
+      const colors = {A:"#dc262608",B:"#ea580c08",C:"#ca8a0408"};
+      const borders = {A:"#dc2626",B:"#ea580c",C:"#ca8a04"};
+      ['A','B','C'].forEach(s => {
+        document.getElementById('sev-'+s).style.background = '#f8fafc';
+        document.getElementById('sev-'+s).style.borderColor = '#e2e8f0';
+      });
+      document.getElementById('sev-'+r.value).style.background = colors[r.value];
+      document.getElementById('sev-'+r.value).style.borderColor = borders[r.value];
+    });
+  });
+});
+
+function updateCounts() {
+  ['count','count2','count3'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.textContent = submissions.length;
+  });
+}
+
+// ===================== NAVIGATION =====================
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.btn-nav').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  const navMap = {home:'nav-home',form:'nav-form',list:'nav-list',detail:'nav-list',dash:'nav-dash'};
+  if(navMap[page]) document.getElementById(navMap[page]).classList.add('active');
+  if(page==='form') resetForm();
+  if(page==='list') renderList();
+  if(page==='dash') renderDash();
+  window.scrollTo(0,0);
+}
+
+// ===================== FORM =====================
+function previewImg(inputId, wrapId, key) {
+  const file = document.getElementById(inputId).files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const wrap = document.getElementById(wrapId);
+    wrap.innerHTML = `<img class="img-preview" src="${e.target.result}">`;
+    if(key==='before') imgBefore = e.target.result;
+    else imgAfter = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function resetForm() {
+  ['f-name','f-emp','f-dept','f-area','f-equip','f-suggest'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.value='';
+  });
+  document.getElementById('f-date').value = new Date().toISOString().slice(0,10);
+  document.querySelectorAll('.hazard-item').forEach(el => {
+    el.classList.remove('checked');
+    el.querySelector('input').checked = false;
+  });
+  document.querySelectorAll('input[name="sev"]').forEach(r => r.checked=false);
+  ['A','B','C'].forEach(s => {
+    document.getElementById('sev-'+s).style.background='#f8fafc';
+    document.getElementById('sev-'+s).style.borderColor='#e2e8f0';
+  });
+  imgBefore=null; imgAfter=null;
+  ['before','after'].forEach(x => {
+    const wrap = document.getElementById('wrap-'+x);
+    if(wrap) wrap.innerHTML=`<div class="img-placeholder"><div class="icon">📁</div><div style="font-size:13px">คลิกเพื่อแนบรูปภาพ</div></div>`;
+  });
+  document.getElementById('alert-success').style.display='none';
+  const btn = document.getElementById('btn-submit');
+  btn.disabled=false; btn.textContent='✅ ส่งข้อเสนอแนะ';
+}
+
+async function submitForm() {
+  const name  = document.getElementById('f-name').value.trim();
+  const emp   = document.getElementById('f-emp').value.trim();
+  const dept  = document.getElementById('f-dept').value.trim();
+  const area  = document.getElementById('f-area').value.trim();
+  if(!name||!emp||!dept||!area){
+    alert('กรุณากรอกข้อมูลที่จำเป็นให้ครบ\n(ชื่อ, รหัสพนักงาน, แผนก, พื้นที่ปฏิบัติงาน)');
+    return;
+  }
+  const btn = document.getElementById('btn-submit');
+  btn.disabled=true; btn.textContent='⏳ กำลังบันทึก...';
+
+  const hazards = [...document.querySelectorAll('.hazard-item input:checked')].map(i=>i.value);
+  const sev     = (document.querySelector('input[name="sev"]:checked')||{}).value||'';
+
+  const item = {
+    id: Date.now(),
+    submittedAt: new Date().toISOString(),
+    name, employeeId:emp, department:dept,
+    date: document.getElementById('f-date').value,
+    workArea: area,
+    hazardEquipment: document.getElementById('f-equip').value.trim(),
+    hazardTypes: hazards,
+    severityLevel: sev,
+    suggestion: document.getElementById('f-suggest').value.trim(),
+    imageBeforePreview: imgBefore,
+    imageAfterPreview: imgAfter,
+  };
+
+  submissions.unshift(item);
+  await saveData(submissions);
+  updateCounts();
+
+  btn.disabled=false; btn.textContent='✅ ส่งข้อเสนอแนะ';
+  document.getElementById('alert-success').style.display='block';
+  setTimeout(()=>{
+    document.getElementById('alert-success').style.display='none';
+    showPage('list');
+  }, 2000);
+}
+
+
+// ===================== LIST =====================
+function renderList() {
+  const c = document.getElementById('list-container');
+  if(!submissions.length){
+    c.innerHTML=`<div class="empty-state"><div style="font-size:44px;margin-bottom:10px">📭</div><div style="font-size:15px;color:#94a3b8;margin-bottom:14px">ยังไม่มีรายการข้อเสนอแนะ</div><button class="btn-primary" onclick="showPage('form')">✍️ แจ้งรายการแรก</button></div>`;
+    return;
+  }
+  c.innerHTML = submissions.map((s,i)=>{
+    const sc = SEV_COLORS[s.severityLevel]||'#94a3b8';
+    const dt = new Date(s.submittedAt).toLocaleDateString('th-TH',{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+    const mgrBadge = s.mgrStatus==='done'
+      ? `<span style="font-size:11px;font-weight:700;color:#15803d;background:#dcfce7;border:1px solid #86efac;padding:2px 8px;border-radius:12px">✅ แก้ไขแล้ว</span>`
+      : s.mgrStatus==='inprogress'
+      ? `<span style="font-size:11px;font-weight:700;color:#1d4ed8;background:#dbeafe;border:1px solid #93c5fd;padding:2px 8px;border-radius:12px">🔄 ดำเนินการ</span>`
+      : `<span style="font-size:11px;font-weight:700;color:#854d0e;background:#fef9c3;border:1px solid #fde047;padding:2px 8px;border-radius:12px">⏳ รอดำเนินการ</span>`;
+    return `<div class="list-item">
+      <div class="list-left">
+        <div class="sev-badge" style="background:${sc}18;border:2px solid ${sc};color:${sc}">${s.severityLevel||'?'}</div>
+        <div>
+          <div class="list-name">${escHtml(s.name)}</div>
+          <div class="list-sub">${escHtml(s.department)} • ${escHtml(s.workArea)}</div>
+        </div>
+      </div>
+      <div class="list-right">
+        ${mgrBadge}
+        <span class="list-date">${dt}</span>
+        <button class="btn-pdf" onclick="exportPDF(${i})">📄 PDF</button>
+        <button class="btn-detail" onclick="showDetail(${i})">อัปเดต →</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ===================== DETAIL =====================
+function showDetail(idx){
+  currentDetail = {data: submissions[idx], idx};
+  const s = submissions[idx];
+  const sc = SEV_COLORS[s.severityLevel]||'#94a3b8';
+  document.getElementById('detail-sev-badge').innerHTML = s.severityLevel
+    ? `<span style="padding:5px 14px;border-radius:20px;background:${sc}12;border:1px solid ${sc};color:${sc};font-weight:700;font-size:13px">ระดับ ${s.severityLevel}</span>` : '';
+  const fields=[['ชื่อ-นามสกุล',s.name],['รหัสพนักงาน',s.employeeId],['แผนก',s.department],['วันที่',s.date],['พื้นที่ปฏิบัติงาน',s.workArea],['เครื่องจักร/อุปกรณ์',s.hazardEquipment||'-']];
+  document.getElementById('detail-grid').innerHTML = fields.map(([l,v])=>`<div class="detail-box"><div class="detail-lbl">${l}</div><div class="detail-val">${escHtml(v||'-')}</div></div>`).join('');
+  document.getElementById('detail-hazards').innerHTML = s.hazardTypes?.length
+    ? `<div style="font-size:12px;color:#64748b;margin-bottom:6px;font-weight:600">ประเภทอันตราย</div>`+s.hazardTypes.map(h=>`<span style="display:inline-block;margin:0 6px 6px 0;padding:3px 12px;border-radius:20px;background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8;font-size:12px">${escHtml(h)}</span>`).join('')
+    : '';
+  document.getElementById('detail-suggestion').innerHTML = s.suggestion
+    ? `<div style="margin-bottom:14px;background:#f8fafc;border-radius:9px;padding:11px 15px;border-left:3px solid #1d4ed8"><div style="font-size:11px;color:#94a3b8;margin-bottom:3px">ข้อเสนอแนะ</div><div style="color:#1e293b;font-size:14px">${escHtml(s.suggestion)}</div></div>` : '';
+  let imgs='';
+  if(s.imageBeforePreview) imgs+=`<div><div style="font-size:12px;color:#64748b;margin-bottom:5px;font-weight:600">รูปภาพ ก่อน</div><img src="${s.imageBeforePreview}" style="width:100%;border-radius:9px;border:1px solid #e2e8f0"></div>`;
+  if(s.imageAfterPreview)  imgs+=`<div><div style="font-size:12px;color:#64748b;margin-bottom:5px;font-weight:600">รูปภาพ หลัง</div><img src="${s.imageAfterPreview}" style="width:100%;border-radius:9px;border:1px solid #e2e8f0"></div>`;
+  renderDetailImages(s);
+  loadMgrFields(s);
+  showPage('detail');
+}
+
+// ===================== PDF =====================
+function exportCurrentPDF(){ if(currentDetail) exportPDF(currentDetail.idx); }
+
+function exportPDF(idx){
+  const s = submissions[idx];
+  const sc = SEV_COLORS[s.severityLevel]||'#6b7280';
+  const hazardsBadges = s.hazardTypes&&s.hazardTypes.length
+    ? s.hazardTypes.map(h=>`<span style="display:inline-block;padding:2px 8px;margin:1px;border-radius:12px;font-size:10px;font-weight:600;background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8">${h}</span>`).join('')
+    : "<span style='color:#94a3b8;font-size:11px'>ไม่ได้ระบุ</span>";
+
+  const win = window.open('','_blank');
+  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap');
+@page{size:A4 landscape;margin:7mm 9mm}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{font-family:'Sarabun',sans-serif;font-size:10px;color:#1e293b;background:#fff}
+.page{width:276mm;height:183mm;display:flex;flex-direction:column;gap:3px;overflow:hidden}
+.hdr{text-align:center;border:2px solid #1d4ed8;border-radius:5px;padding:4px 8px;background:#eff6ff;flex-shrink:0}
+.hdr h1{font-size:13px;font-weight:700;color:#1d4ed8;margin-bottom:1px}
+.hdr p{font-size:8px;color:#64748b}
+.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:3px;flex-shrink:0}
+.ib{border:1px solid #e2e8f0;border-radius:4px;padding:3px 7px;background:#f8fafc}
+.ib .l{font-size:7.5px;color:#94a3b8;margin-bottom:1px}
+.ib .v{font-weight:700;font-size:10px}
+.main-row{display:grid;grid-template-columns:1fr 118mm;gap:4px;flex:1;min-height:0}
+.left-col{display:flex;flex-direction:column;gap:3px;overflow:hidden}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:3px}
+.sec{border:1px solid #e2e8f0;border-radius:4px;padding:4px 8px}
+.sec.grow{flex:1;min-height:0}
+.st{font-weight:700;font-size:9px;color:#1d4ed8;margin-bottom:3px;border-bottom:1px solid #f1f5f9;padding-bottom:2px}
+.sec-body{font-size:10px;line-height:1.4}
+.sev-chip{display:inline-block;padding:1px 8px;border-radius:10px;font-weight:700;font-size:9px}
+.badge{display:inline-block;padding:1px 7px;margin:1px;border-radius:10px;font-size:8.5px;font-weight:600;background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8}
+.right-col{display:flex;flex-direction:column;gap:3px}
+.imgbox{border:1px solid #e2e8f0;border-radius:4px;overflow:hidden;flex:1;display:flex;flex-direction:column}
+.imgbox .il{background:#f1f5f9;padding:2px 7px;font-size:8px;font-weight:600;color:#475569;flex-shrink:0}
+.imgbox img{width:100%;flex:1;object-fit:cover;display:block;min-height:0}
+.noimg{flex:1;display:flex;align-items:center;justify-content:center;color:#cbd5e1;font-size:9px}
+.footer-row{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.sigs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;flex:1}
+.sb{border:1px solid #cbd5e1;border-radius:4px;height:28px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:3px}
+.sb span{font-size:8px;color:#94a3b8}
+.docno{font-size:7.5px;color:#94a3b8;white-space:nowrap}
+@media print{button{display:none}}
+</style></head><body>
+<div class="page">
+  <div class="hdr">
+    <h1>RSS : Risk Safety Suggestion</h1>
+    <p>ระบบแจ้งข้อเสนอแนะด้านความปลอดภัย | DAR NO.: SF-24-002 | DOC. NO.: FM-SF-001 Rev.:04 | Effective Date: 12/02/2024</p>
+  </div>
+  <div class="g4">
+    <div class="ib"><div class="l">ชื่อ - นามสกุล</div><div class="v">${s.name||'-'}</div></div>
+    <div class="ib"><div class="l">รหัสพนักงาน</div><div class="v">${s.employeeId||'-'}</div></div>
+    <div class="ib"><div class="l">แผนก</div><div class="v">${s.department||'-'}</div></div>
+    <div class="ib"><div class="l">วันที่</div><div class="v">${s.date||'-'}</div></div>
+  </div>
+  <div class="main-row">
+    <div class="left-col">
+      <div class="g2">
+        <div class="sec"><div class="st">1. งานที่ทำ และพื้นที่ปฏิบัติงาน</div><div class="sec-body">${s.workArea||'-'}</div></div>
+        <div class="sec"><div class="st">2. เครื่องจักร / อุปกรณ์ ที่ทำให้เกิดอันตราย</div><div class="sec-body">${s.hazardEquipment||'-'}</div></div>
+      </div>
+      <div class="sec">
+        <div class="st">3. อันตรายที่เกิด (stop 6 type) และระดับความรุนแรง</div>
+        <div style="margin-bottom:3px">${hazardsBadges}</div>
+        <div><strong>ระดับ: </strong>${s.severityLevel
+          ? `<span class="sev-chip" style="background:${sc}15;border:1px solid ${sc};color:${sc}">${SEV_LABELS[s.severityLevel]||s.severityLevel}</span>`
+          : "<span style='color:#94a3b8'>ไม่ได้ระบุ</span>"}</div>
+      </div>
+      <div class="sec grow">
+        <div class="st">4. ผู้ปฏิบัติงานทำการเสนอแนะ เพื่อปรับปรุง</div>
+        <div class="sec-body">${s.suggestion||'-'}</div>
+      </div>
+    </div>
+    <div class="right-col">
+      <div class="imgbox">
+        <div class="il">📷 รูปภาพ ก่อน</div>
+        ${s.imageBeforePreview?`<img src="${s.imageBeforePreview}"/>`:`<div class="noimg">ไม่มีรูปภาพ</div>`}
+      </div>
+      <div class="imgbox">
+        <div class="il">📷 รูปภาพ หลัง</div>
+        ${s.imageAfterPreview?`<img src="${s.imageAfterPreview}"/>`:`<div class="noimg">ไม่มีรูปภาพ</div>`}
+      </div>
+    </div>
+  </div>
+  <div class="footer-row">
+    <div class="sigs">
+      <div class="sb"><span>จป.วิชาชีพ</span></div>
+      <div class="sb"><span>ประธาน คปอ.</span></div>
+      <div class="sb"><span>ประธานกิจกรรม RSS</span></div>
+    </div>
+    <div class="docno">พิมพ์เมื่อ: ${new Date().toLocaleDateString('th-TH')}</div>
+  </div>
+</div>
+<script>window.onload=function(){window.print()}<\/script>
+</body></html>`);
+  win.document.close();
+}
+
+
+// ===================== COPY =====================
+function copyEl(id, btn){
+  const text = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent='✓ คัดลอกแล้ว'; btn.classList.add('copied');
+    setTimeout(()=>{ btn.textContent='📋 คัดลอก'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+
+// ===================== DASHBOARD =====================
+const DASH_KEY = "rss_dash_v1";
+let deptData = {}; // { deptName: { target:0, fixed:0, customAdded:true/false } }
+
+async function loadDeptData() {
+  try {
+    const r = await window.storage.get(DASH_KEY, true);
+    if(r && r.value) return JSON.parse(r.value);
+  } catch(e) {}
+  try { return JSON.parse(localStorage.getItem(DASH_KEY)||'{}'); } catch(e) { return {}; }
+}
+async function saveDeptData() {
+  try { await window.storage.set(DASH_KEY, JSON.stringify(deptData), true); } catch(e) {}
+  try { localStorage.setItem(DASH_KEY, JSON.stringify(deptData)); } catch(e) {}
+}
+
+function getDeptStats() {
+  // Count RSS per department from submissions
+  const stats = {};
+  submissions.forEach(s => {
+    const d = s.department || 'ไม่ระบุ';
+    if(!stats[d]) stats[d] = 0;
+    stats[d]++;
+  });
+  return stats;
+}
+
+async function renderDash() {
+  deptData = await loadDeptData();
+  const stats = getDeptStats();
+
+  // Merge: add departments from submissions not yet in deptData
+  Object.keys(stats).forEach(d => {
+    if(!deptData[d]) deptData[d] = { target: stats[d], fixed: 0 };
+  });
+
+  // KPI
+  const total = submissions.length;
+  const sevA = submissions.filter(s=>s.severityLevel==='A').length;
+  const sevB = submissions.filter(s=>s.severityLevel==='B').length;
+  const sevC = submissions.filter(s=>s.severityLevel==='C').length;
+  const totalFixed = submissions.filter(s=>s.mgrStatus==='done').length;
+  const totalInprog = submissions.filter(s=>s.mgrStatus==='inprogress').length;
+
+  document.getElementById('db-kpi').innerHTML = `
+    <div class="db-kpi"><div class="db-kpi-icon">📋</div><div class="db-kpi-num">${total}</div><div class="db-kpi-label">RSS ทั้งหมด</div></div>
+    <div class="db-kpi"><div class="db-kpi-icon" style="color:#dc2626">🔴</div><div class="db-kpi-num" style="color:#dc2626">${sevA}</div><div class="db-kpi-label">ระดับ A (วิกฤต)</div></div>
+    <div class="db-kpi"><div class="db-kpi-icon" style="color:#1d4ed8">🔄</div><div class="db-kpi-num" style="color:#1d4ed8">${totalInprog}</div><div class="db-kpi-label">กำลังดำเนินการ</div></div>
+    <div class="db-kpi"><div class="db-kpi-icon" style="color:#059669">✅</div><div class="db-kpi-num" style="color:#059669">${totalFixed}</div><div class="db-kpi-label">แก้ไขแล้ว</div></div>
+  `;
+
+  // Severity chart
+  const sevData = [
+    {label:'ระดับ A', val:sevA, color:'#dc2626', bg:'#fee2e2'},
+    {label:'ระดับ B', val:sevB, color:'#ea580c', bg:'#ffedd5'},
+    {label:'ระดับ C', val:sevC, color:'#ca8a04', bg:'#fef9c3'},
+  ];
+  document.getElementById('db-sev-chart').innerHTML = sevData.map(s=>{
+    const pct = total > 0 ? Math.round(s.val/total*100) : 0;
+    return `<div class="bar-wrap">
+      <div class="bar-label"><span style="font-weight:700;color:${s.color}">${s.label}</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${s.color}"></div></div>
+      <div class="bar-val" style="color:${s.color}">${s.val}</div>
+    </div>`;
+  }).join('') + (total===0?'<div style="color:#94a3b8;font-size:13px;text-align:center;padding:20px 0">ยังไม่มีข้อมูล</div>':'');
+
+  // Dept chart top5
+  const deptSorted = Object.entries(stats).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const maxD = deptSorted[0]?.[1]||1;
+  document.getElementById('db-dept-chart').innerHTML = deptSorted.length ? deptSorted.map(([d,n])=>`
+    <div class="bar-wrap">
+      <div class="bar-label" style="font-size:11px">${d.length>12?d.slice(0,12)+'…':d}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.round(n/maxD*100)}%;background:#1d4ed8"></div></div>
+      <div class="bar-val">${n}</div>
+    </div>`).join('')
+    : '<div style="color:#94a3b8;font-size:13px;text-align:center;padding:20px 0">ยังไม่มีข้อมูล</div>';
+
+  // Dept table
+  const allDepts = new Set([...Object.keys(deptData), ...Object.keys(stats)]);
+  let rows = '';
+  allDepts.forEach(d => {
+    if(!deptData[d]) deptData[d] = {target:stats[d]||0, fixed:0};
+    const dd = deptData[d];
+    const total_d = stats[d] || 0;
+    const fixed = submissions.filter(s=>s.department===d && s.mgrStatus==='done').length;
+    const target = dd.target || total_d;
+    const remain = Math.max(0, total_d - fixed);
+    const pct = total_d > 0 ? Math.round(fixed/total_d*100) : 0;
+    let status, statusLabel;
+    if(fixed >= total_d && total_d > 0){ status='status-done'; statusLabel='✅ เสร็จสิ้น'; }
+    else if(fixed > 0){ status='status-inprogress'; statusLabel='🔄 กำลังดำเนินการ'; }
+    else { status='status-pending'; statusLabel='⏳ รอดำเนินการ'; }
+    const dEnc = encodeURIComponent(d);
+    rows += `<tr>
+      <td><strong>${escHtml(d)}</strong><div style="font-size:11px;color:#94a3b8;margin-top:2px">${pct}% แก้ไขแล้ว</div></td>
+      <td style="text-align:center;font-weight:700">${total_d}</td>
+      <td style="text-align:center"><input class="inp-num" type="number" min="0" value="${target}" onchange="updateTarget('${dEnc}',this.value)"></td>
+      <td style="text-align:center"><span style="font-weight:700;color:#15803d">${fixed}</span><div style="font-size:10px;color:#94a3b8">(จากระบบ)</div></td>
+      <td style="text-align:center"><span style="font-weight:700;color:${remain>0?'#dc2626':'#15803d'}">${remain}</span></td>
+      <td style="text-align:center"><span class="status-badge ${status}">${statusLabel}</span></td>
+      <td style="text-align:center"><button class="btn-sm btn-red" onclick="deleteDept('${dEnc}')">🗑 ลบ</button></td>
+    </tr>`;
+  });
+  document.getElementById('dept-tbody').innerHTML = rows || '<tr><td colspan="7" style="text-align:center;color:#94a3b8;padding:20px">ยังไม่มีแผนก</td></tr>';
+
+  // Recent 5
+  const recent = submissions.slice(0,5);
+  document.getElementById('db-recent').innerHTML = `
+    <thead><tr>
+      <th>ชื่อ</th><th>แผนก</th><th>พื้นที่</th><th style="text-align:center">ระดับ</th><th>วันที่</th>
+    </tr></thead>
+    <tbody>${recent.map(s=>{
+      const sc = SEV_COLORS[s.severityLevel]||'#94a3b8';
+      const dt = new Date(s.submittedAt).toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'numeric'});
+      return `<tr>
+        <td><strong>${escHtml(s.name)}</strong></td>
+        <td>${escHtml(s.department)}</td>
+        <td>${escHtml(s.workArea)}</td>
+        <td style="text-align:center"><span style="font-weight:700;color:${sc}">${s.severityLevel||'-'}</span></td>
+        <td style="font-size:12px;color:#94a3b8">${dt}</td>
+      </tr>`;
+    }).join('')}</tbody>`;
+}
+
+async function updateTarget(dEnc, val) {
+  const d = decodeURIComponent(dEnc);
+  if(!deptData[d]) deptData[d] = {fixed:0};
+  deptData[d].target = parseInt(val)||0;
+  await saveDeptData();
+  setTimeout(renderDash, 100);
+}
+
+async function updateFixed(dEnc, val) {
+  const d = decodeURIComponent(dEnc);
+  if(!deptData[d]) deptData[d] = {target:0};
+  deptData[d].fixed = parseInt(val)||0;
+  await saveDeptData();
+  setTimeout(renderDash, 100);
+}
+
+async function deleteDept(dEnc) {
+  const d = decodeURIComponent(dEnc);
+  if(!confirm('ลบแผนก "' + d + '" ออกจาก Dashboard?')) return;
+  delete deptData[d];
+  await saveDeptData();
+  renderDash();
+}
+
+function showAddDept() {
+  document.getElementById('dept-add-row').style.display='flex';
+  document.getElementById('new-dept-name').focus();
+}
+function cancelAddDept() {
+  document.getElementById('dept-add-row').style.display='none';
+  document.getElementById('new-dept-name').value='';
+}
+async function confirmAddDept() {
+  const name = document.getElementById('new-dept-name').value.trim();
+  if(!name){ alert('กรุณากรอกชื่อแผนก'); return; }
+  if(deptData[name]){ alert('มีแผนกนี้อยู่แล้ว'); return; }
+  deptData[name] = { target:0, fixed:0, customAdded:true };
+  await saveDeptData();
+  cancelAddDept();
+  renderDash();
+}
+
+
+// ===================== MANAGER UPDATE =====================
+let mgrImgData = null;
+
+function previewMgrImg(input) {
+  const file = input.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    mgrImgData = e.target.result;
+    const wrap = document.getElementById('wrap-mgr-img');
+    wrap.innerHTML = `<img class="img-preview" src="${e.target.result}" style="height:130px">`;
+  };
+  reader.readAsDataURL(file);
+}
+
+async function saveMgrUpdate() {
+  if(!currentDetail) return;
+  const idx = currentDetail.idx;
+  const status = document.getElementById('mgr-status').value;
+  const date   = document.getElementById('mgr-date').value;
+  const note   = document.getElementById('mgr-note').value.trim();
+  const name   = document.getElementById('mgr-name').value.trim();
+
+  if(!name){ alert('กรุณากรอกชื่อหัวหน้างาน'); return; }
+
+  // Update submission
+  submissions[idx].mgrStatus  = status;
+  submissions[idx].mgrDate    = date;
+  submissions[idx].mgrNote    = note;
+  submissions[idx].mgrName    = name;
+  submissions[idx].mgrUpdatedAt = new Date().toISOString();
+  if(mgrImgData) submissions[idx].imageAfterPreview = mgrImgData;
+
+  await saveData(submissions);
+  currentDetail.data = submissions[idx];
+
+  // Show success
+  const btn = event.target;
+  btn.textContent = '✅ บันทึกแล้ว!';
+  btn.style.background = '#15803d';
+  setTimeout(() => {
+    btn.textContent = '💾 บันทึกการอัปเดต';
+    btn.style.background = '#0369a1';
+  }, 2000);
+
+  // Re-render detail images
+  renderDetailImages(submissions[idx]);
+  renderList();
+}
+
+function renderDetailImages(s) {
+  let imgs = '';
+  if(s.imageBeforePreview) imgs += `<div><div style="font-size:12px;color:#64748b;margin-bottom:5px;font-weight:600">📷 รูปภาพ ก่อน</div><img src="${s.imageBeforePreview}" style="width:100%;border-radius:9px;border:1px solid #e2e8f0"></div>`;
+  if(s.imageAfterPreview)  imgs += `<div><div style="font-size:12px;color:#64748b;margin-bottom:5px;font-weight:600">📷 รูปภาพ หลัง (แก้ไขแล้ว)</div><img src="${s.imageAfterPreview}" style="width:100%;border-radius:9px;border:2px solid #86efac"></div>`;
+  document.getElementById('detail-images').innerHTML = imgs;
+}
+
+function loadMgrFields(s) {
+  mgrImgData = null;
+  document.getElementById('mgr-status').value = s.mgrStatus || 'pending';
+  document.getElementById('mgr-date').value   = s.mgrDate   || new Date().toISOString().slice(0,10);
+  document.getElementById('mgr-note').value   = s.mgrNote   || '';
+  document.getElementById('mgr-name').value   = s.mgrName   || '';
+  // reset img preview
+  const wrap = document.getElementById('wrap-mgr-img');
+  if(s.imageAfterPreview) {
+    wrap.innerHTML = `<img class="img-preview" src="${s.imageAfterPreview}" style="height:130px">`;
+  } else {
+    wrap.innerHTML = `<div class="img-placeholder"><div class="icon">📁</div><div style="font-size:13px">คลิกเพื่อแนบรูปภาพหลังแก้ไข</div></div>`;
+  }
+}
+
+// ===================== UTIL =====================
+function escHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+</script>
+</body>
+</html>
